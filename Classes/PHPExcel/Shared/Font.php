@@ -68,6 +68,7 @@ class PHPExcel_Shared_Font
     //  XXX: Constants created!
     /** Font filenames */
     const ARIAL                             = 'arial.ttf';
+    const MSGOTHIC                          = 'msgothic.ttf';
     const ARIAL_BOLD                        = 'arialbd.ttf';
     const ARIAL_ITALIC                      = 'ariali.ttf';
     const ARIAL_BOLD_ITALIC                 = 'arialbi.ttf';
@@ -150,6 +151,18 @@ class PHPExcel_Shared_Font
      */
     public static $defaultColumnWidths = array(
         'Arial' => array(
+             1 => array('px' => 24, 'width' => 12.00000000),
+             2 => array('px' => 24, 'width' => 12.00000000),
+             3 => array('px' => 32, 'width' => 10.66406250),
+             4 => array('px' => 32, 'width' => 10.66406250),
+             5 => array('px' => 40, 'width' => 10.00000000),
+             6 => array('px' => 48, 'width' =>  9.59765625),
+             7 => array('px' => 48, 'width' =>  9.59765625),
+             8 => array('px' => 56, 'width' =>  9.33203125),
+             9 => array('px' => 64, 'width' =>  9.14062500),
+            10 => array('px' => 64, 'width' =>  9.14062500),
+        ),
+        'Msgothic' => array(
              1 => array('px' => 24, 'width' => 12.00000000),
              2 => array('px' => 24, 'width' => 12.00000000),
              3 => array('px' => 32, 'width' => 10.66406250),
@@ -311,6 +324,8 @@ class PHPExcel_Shared_Font
         // font size should really be supplied in pixels in GD2,
         // but since GD2 seems to assume 72dpi, pixels and points are the same
         $fontFile = self::getTrueTypeFontFileFromFont($font);
+
+        $text = mb_encode_numericentity($text, array(0x0080, 0xffff, 0, 0xffff), 'UTF-8');
         $textBox = imagettfbbox($font->getSize(), $rotation, $fontFile, $text);
 
         // Get corners positions
@@ -351,6 +366,7 @@ class PHPExcel_Shared_Font
                 break;
 
             case 'Arial':
+            case 'Msgothic':
                 // value 7 was found via interpolation by inspecting real Excel files with Arial 10 font.
 //                $columnWidth = (int) (7 * PHPExcel_Shared_String::CountCharacters($columnText));
                 // value 8 was set because of experience in different exports at Arial 10 font.
@@ -439,6 +455,7 @@ class PHPExcel_Shared_Font
         // Check if we can map font to true type font file
         switch ($name) {
             case 'Arial':
+            case 'Msgothic':
                 $fontFile = (
                     $bold ? ($italic ? self::ARIAL_BOLD_ITALIC : self::ARIAL_BOLD)
                           : ($italic ? self::ARIAL_ITALIC : self::ARIAL)
@@ -526,7 +543,7 @@ class PHPExcel_Shared_Font
 
         // Check if file actually exists
         if (!file_exists($fontFile)) {
-            throw new PHPExcel_Exception('TrueType Font file not found');
+            throw new PHPExcel_Exception('TrueType '.$fontFile.' Font file not found');
         }
 
         return $fontFile;
@@ -599,6 +616,7 @@ class PHPExcel_Shared_Font
     {
         switch ($font->getName()) {
             case 'Arial':
+            case 'Msgothic':
                 switch ($font->getSize()) {
                     case 10:
                         // inspection of Arial 10 workbook says 12.75pt ~17px
