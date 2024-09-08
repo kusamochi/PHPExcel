@@ -1,3 +1,6 @@
+# PHP5 PHP7 PHP8
+Fixed syntax for running on PHP8, tested on PHP5.4, PHP7.4 and PHP8.1
+
 # PHPExcel - DEAD
 
 PHPExcel last version, 1.8.1, was released in 2015. The project was officially deprecated in 2017 and permanently archived in 2019.
