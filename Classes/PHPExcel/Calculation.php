@@ -76,7 +76,6 @@ class PHPExcel_Calculation
 
     private static $returnArrayAsType = self::RETURN_ARRAY_AS_VALUE;
 
-    private $_debugLog;
 
     /**
      * Instance of this class
@@ -185,6 +184,7 @@ class PHPExcel_Calculation
      *
      */
     private $cyclicReferenceStack;
+    private $_debugLog;
 
     private $cellStack = array();
 
