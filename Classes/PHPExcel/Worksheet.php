@@ -330,8 +330,11 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      * @param PHPExcel        $pParent
      * @param string        $pTitle
      */
-    public function __construct(PHPExcel $pParent = null, $pTitle = 'Worksheet')
+    public function __construct(PHPExcel $pParent, $pTitle)
     {
+        if(empty($pTitle)){
+            $pTitle="Worksheet";
+        }
         // Set parent and title
         $this->parent = $pParent;
         $this->setTitle($pTitle, false);
@@ -383,8 +386,9 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      */
     public function __destruct()
     {
-        PHPExcel_Calculation::getInstance($this->parent)->clearCalculationCacheForWorksheet($this->title);
-
+        if($this->parent!==null){
+            PHPExcel_Calculation::getInstance($this->parent)->clearCalculationCacheForWorksheet($this->title);
+        }
         $this->disconnectCells();
     }
 
@@ -557,7 +561,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      * @param int|null $iChartIndex Index where chart should go (0,1,..., or null for last)
      * @return PHPExcel_Chart
      */
-    public function addChart(PHPExcel_Chart $pChart = null, $iChartIndex = null)
+    public function addChart(PHPExcel_Chart $pChart, $iChartIndex)
     {
         $pChart->setWorksheet($this);
         if (is_null($iChartIndex)) {
@@ -1513,7 +1517,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      * @throws PHPExcel_Exception
      * @return PHPExcel_Worksheet
      */
-    public function setSharedStyle(PHPExcel_Style $pSharedCellStyle = null, $pRange = '')
+    public function setSharedStyle(PHPExcel_Style $pSharedCellStyle, $pRange = '')
     {
         $this->duplicateStyle($pSharedCellStyle, $pRange);
         return $this;
@@ -1529,7 +1533,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      * @throws PHPExcel_Exception
      * @return PHPExcel_Worksheet
      */
-    public function duplicateStyle(PHPExcel_Style $pCellStyle = null, $pRange = '')
+    public function duplicateStyle(PHPExcel_Style $pCellStyle, $pRange = '')
     {
         // make sure we have a real style and not supervisor
         $style = $pCellStyle->getIsSupervisor() ? $pCellStyle->getSharedComponent() : $pCellStyle;
@@ -1575,7 +1579,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      * @throws PHPExcel_Exception
      * @return PHPExcel_Worksheet
      */
-    public function duplicateConditionalStyle(array $pCellStyle = null, $pRange = '')
+    public function duplicateConditionalStyle(array $pCellStyle, $pRange = '')
     {
         foreach ($pCellStyle as $cellStyle) {
             if (!($cellStyle instanceof PHPExcel_Style_Conditional)) {
@@ -2590,8 +2594,11 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      *
      * @return PHPExcel_Worksheet_ColumnIterator
      */
-    public function getColumnIterator($startColumn = 'A', $endColumn = null)
+    public function getColumnIterator($startColumn, $endColumn = null)
     {
+        if(empty($startColumn)){
+            $startColumn='A';
+        }
         return new PHPExcel_Worksheet_ColumnIterator($this, $startColumn, $endColumn);
     }
 
@@ -2702,8 +2709,11 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      * @param    PHPExcel_Cell_Hyperlink    $pHyperlink
      * @return PHPExcel_Worksheet
      */
-    public function setHyperlink($pCellCoordinate = 'A1', PHPExcel_Cell_Hyperlink $pHyperlink = null)
+    public function setHyperlink($pCellCoordinate, PHPExcel_Cell_Hyperlink $pHyperlink)
     {
+        if(empty($pCellCoordinate)){
+            $pCellCoordinate='A1';
+        }
         if ($pHyperlink === null) {
             unset($this->hyperlinkCollection[$pCellCoordinate]);
         } else {
@@ -2718,8 +2728,11 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      * @param string $pCoordinate
      * @return boolean
      */
-    public function hyperlinkExists($pCoordinate = 'A1')
+    public function hyperlinkExists($pCoordinate)
     {
+        if(empty($pCoordinate)){
+            $$pCoordinate='A1';
+        }
         return isset($this->hyperlinkCollection[$pCoordinate]);
     }
 
@@ -2738,8 +2751,12 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      *
      * @param string $pCellCoordinate Cell coordinate to get data validation for
      */
-    public function getDataValidation($pCellCoordinate = 'A1')
+    public function getDataValidation($pCellCoordinate)
     {
+        if(empty($pCellCoordinate)){
+            $pCellCoordinate='A1';
+        }
+
         // return data validation if we already have one
         if (isset($this->dataValidationCollection[$pCellCoordinate])) {
             return $this->dataValidationCollection[$pCellCoordinate];
@@ -2757,8 +2774,12 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      * @param    PHPExcel_Cell_DataValidation    $pDataValidation
      * @return PHPExcel_Worksheet
      */
-    public function setDataValidation($pCellCoordinate = 'A1', PHPExcel_Cell_DataValidation $pDataValidation = null)
+    public function setDataValidation($pCellCoordinate, PHPExcel_Cell_DataValidation $pDataValidation)
     {
+        if(empty($pCellCoordinate)){
+            $pCellCoordinate='A1';
+        }
+
         if ($pDataValidation === null) {
             unset($this->dataValidationCollection[$pCellCoordinate]);
         } else {
@@ -2773,8 +2794,12 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      * @param string $pCoordinate
      * @return boolean
      */
-    public function dataValidationExists($pCoordinate = 'A1')
+    public function dataValidationExists($pCoordinate)
     {
+        if(empty($pCoordinate)){
+            $pCoordinate='A1';
+        }
+
         return isset($this->dataValidationCollection[$pCoordinate]);
     }
 
