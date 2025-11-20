@@ -330,11 +330,8 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      * @param PHPExcel        $pParent
      * @param string        $pTitle
      */
-    public function __construct(PHPExcel $pParent, $pTitle)
+    public function __construct(PHPExcel $pParent, $pTitle = "Worksheet")
     {
-        if(empty($pTitle)){
-            $pTitle="Worksheet";
-        }
         // Set parent and title
         $this->parent = $pParent;
         $this->setTitle($pTitle, false);
