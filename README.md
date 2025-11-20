@@ -1,5 +1,5 @@
 # PHP5 PHP7 PHP8
-Fixed syntax for running on PHP8, tested on PHP5.4, PHP7.4 and PHP8.1
+Fixed syntax for running on PHP5.4, PHP7.4, PHP8.4
 
 # PHPExcel - DEAD
 
